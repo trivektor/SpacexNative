@@ -24,12 +24,16 @@ const LAUNCHES_QUERY = gql`
   }
 `;
 
-const LaunchesLoader = () => {
+const LaunchesLoader = ({navigation}) => {
   const {data, loading} = useQuery(LAUNCHES_QUERY);
 
   if (loading) return <Spinner />;
 
-  return <Launches launches={sortBy(data.launches, 'launch_date_unix').reverse()} />;
+  return (
+    <Launches
+      navigation={navigation}
+      launches={sortBy(data.launches, 'launch_date_unix').reverse()} />
+  );
 };
 
 export default LaunchesLoader;

@@ -6,52 +6,34 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
-import {Container, Header, Body, Title, Footer, FooterTab, Button, Text, Content, StyleSheet} from 'native-base';
+import React from 'react';
+
 import {ApolloProvider} from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-import {Launchpads, Launches} from './components';
-
-const COMPONENT_MAPPINGS = {
-  launchpads: Launchpads,
-  launches: Launches,
-};
+import {Launch, Home} from './components';
 
 const client = new ApolloClient({
   uri: 'https://api.spacex.land/graphql',
 });
 
-const App = () => {
-  const [activeTab, setActiveTab] = useState("launchpads");
-  const ActiveComponent = COMPONENT_MAPPINGS[activeTab];
+const Stack = createStackNavigator();
 
+const App = () => {
   return (
     <ApolloProvider client={client}>
-      <Container>
-        <Header>
-          <Body>
-            <Title>Public SpaceX Archives</Title>
-          </Body>
-        </Header>
-        <Content>
-          <ActiveComponent />
-        </Content>
-        <Footer>
-          <FooterTab>
-            <Button
-              active={activeTab === "launchpads"}
-              onPress={() => setActiveTab("launchpads")}>
-              <Text>Launchpads</Text>
-            </Button>
-            <Button
-              active={activeTab === "launches"}
-              onPress={() => setActiveTab("launches")}>
-              <Text>Launches</Text>
-            </Button>
-          </FooterTab>
-        </Footer>
-      </Container>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="SpaceX Archives"
+            component={Home} />
+          <Stack.Screen
+            name="Launch"
+            component={Launch} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </ApolloProvider>
   );
 };
