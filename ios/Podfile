@@ -31,6 +31,8 @@ def add_flipper_pods!(versions = {})
   pod 'FlipperKit/FlipperKitHighlightOverlay', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitLayoutTextSearchable', versions['Flipper'], :configuration => 'Debug'
   pod 'FlipperKit/FlipperKitNetworkPlugin', versions['Flipper'], :configuration => 'Debug'
+  # https://stackoverflow.com/a/58133303/477697
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 end
 
 # Post Install processing for Flipper
