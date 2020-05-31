@@ -10,6 +10,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "apollo-boost": "^0.4.9",
+    "apollo-client": "^2.6.10",
+    "graphql": "^15.0.0",
+    "graphql-tag": "^2.10.3",
     "lodash-es": "^4.17.15",
     "native-base": "^2.13.12",
     "react": "16.11.0",

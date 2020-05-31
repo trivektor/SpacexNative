@@ -10,12 +10,12 @@ const Launchpads = ({launchpads}) => {
         style={{...StyleSheet.absoluteFillObject}}
         showsUserLocation={true}>
         {
-          launchpads.map(({site_id, location, attempted_launches}) => {
+          launchpads.map(({id, location, attempted_launches}) => {
             const {name, region, latitude, longitude} = location;
 
             return (
               <Marker
-                key={site_id}
+                key={id}
                 flat={true}
                 coordinate={{latitude, longitude}}
                 title={`${name} (${region})`}

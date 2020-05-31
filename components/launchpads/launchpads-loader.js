@@ -1,24 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import {Container, Header, Body, Title, Footer, FooterTab, Button, Text, Content, Spinner} from 'native-base';
+import React from 'react';
+import {Spinner} from 'native-base';
+import gql from 'graphql-tag';
+import {useQuery} from '@apollo/react-hooks';
 
-import {SPACEX_API_HOST} from '../../constants';
 import Launchpads from './launchpads';
 
+const LAUNCHPADS_QUERY = gql`
+  {
+    launchpads {
+      id
+      location {
+        name
+        region
+        longitude
+        latitude
+      }
+      attempted_launches
+    }
+  }
+`;
+
+// TODO: error handling
 const LaunchpadsLoader = () => {
-  const [fetching, setFetching] = useState(true);
-  const [launchpads, setLaunchpads] = useState([]);
+  const {data, loading} = useQuery(LAUNCHPADS_QUERY);
 
-  useEffect(() => {
-    fetch(`${SPACEX_API_HOST}/launchpads`)
-      .then((response) => response.json())
-      .then((json) => setLaunchpads(json))
+  if (loading) return <Spinner />;
 
-    setFetching(false);
-  }, []);
-
-  return fetching
-    ? <Spinner />
-    : <Launchpads launchpads={launchpads} />;
+  return <Launchpads launchpads={data.launchpads} />;
 };
 
 export default LaunchpadsLoader;
