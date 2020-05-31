@@ -13,12 +13,14 @@
     "@apollo/react-hooks": "^3.1.5",
     "apollo-boost": "^0.4.9",
     "apollo-client": "^2.6.10",
+    "date-fns": "^2.14.0",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
     "lodash-es": "^4.17.15",
     "native-base": "^2.13.12",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-elements": "^2.0.1",
     "react-native-maps": "0.27.1"
   },
   "devDependencies": {

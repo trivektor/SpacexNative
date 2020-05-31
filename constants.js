@@ -1,1 +1,1 @@
-export const SPACEX_API_HOST = 'https://api.spacexdata.com/v3';
+export const DATE_FORMAT = 'yyyy/M/dd';

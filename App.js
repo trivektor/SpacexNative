@@ -11,11 +11,11 @@ import {Container, Header, Body, Title, Footer, FooterTab, Button, Text, Content
 import {ApolloProvider} from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 
-import {Launchpads, History} from './components';
+import {Launchpads, Launches} from './components';
 
 const COMPONENT_MAPPINGS = {
   launchpads: Launchpads,
-  history: History,
+  launches: Launches,
 };
 
 const client = new ApolloClient({
@@ -45,9 +45,9 @@ const App = () => {
               <Text>Launchpads</Text>
             </Button>
             <Button
-              active={activeTab === "history"}
-              onPress={() => setActiveTab("history")}>
-              <Text>History</Text>
+              active={activeTab === "launches"}
+              onPress={() => setActiveTab("launches")}>
+              <Text>Launches</Text>
             </Button>
           </FooterTab>
         </Footer>
