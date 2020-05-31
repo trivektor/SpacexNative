@@ -9,22 +9,22 @@
 import React, {useState} from 'react';
 import {Container, Header, Body, Title, Footer, FooterTab, Button, Text, Content, StyleSheet} from 'native-base';
 
-import {Launches, History} from './components';
+import {Launchpads, History} from './components';
 
 const COMPONENT_MAPPINGS = {
-  launches: Launches,
+  launchpads: Launchpads,
   history: History,
 };
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState("launches");
+  const [activeTab, setActiveTab] = useState("launchpads");
   const ActiveComponent = COMPONENT_MAPPINGS[activeTab];
 
   return (
     <Container>
       <Header>
         <Body>
-          <Title>Unofficial SpaceX App</Title>
+          <Title>Public SpaceX Archives</Title>
         </Body>
       </Header>
       <Content>
@@ -33,8 +33,8 @@ const App = () => {
       <Footer>
         <FooterTab>
           <Button
-            active={activeTab === "launches"}
-            onPress={() => setActiveTab("launches")}>
+            active={activeTab === "launchpads"}
+            onPress={() => setActiveTab("launchpads")}>
             <Text>Launches</Text>
           </Button>
           <Button
