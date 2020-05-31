@@ -1,3 +1,3 @@
-import Launch from './launch';
+import LaunchLoader from './launch-loader';
 
-export default Launch;
+export default LaunchLoader;
