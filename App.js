@@ -31,7 +31,8 @@ const App = () => {
             component={Home} />
           <Stack.Screen
             name="Launch"
-            component={Launch} />
+            component={Launch}
+            options={({route}) => ({title: route.params.launchTitle})} />
         </Stack.Navigator>
       </NavigationContainer>
     </ApolloProvider>

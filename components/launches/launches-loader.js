@@ -27,7 +27,7 @@ const LAUNCHES_QUERY = gql`
 const LaunchesLoader = ({navigation}) => {
   const {data, loading} = useQuery(LAUNCHES_QUERY);
 
-  if (loading) return <Spinner />;
+  if (loading) return <Spinner color='black' />;
 
   return (
     <Launches

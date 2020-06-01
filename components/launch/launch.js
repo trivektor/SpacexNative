@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
-import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail} from 'native-base';
+import React, {Fragment, useState, useEffect, useRef} from 'react';
+import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail, Button} from 'native-base';
 import JSONTree from 'react-native-json-tree';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Dimensions, View} from 'react-native';
 import {format} from 'date-fns';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Modal} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { WebView } from 'react-native-webview';
+import parse from 'url-parse';
 
 import {DATE_FORMAT} from '../../constants';
 
@@ -37,8 +39,9 @@ const JSON_TREE_PROPS = {
   shouldExpandNode: () => true,
 };
 
-const Launch = ({launch}) => {
+const Launch = ({launch, navigation}) => {
   const [showImageModal, setShowImageModal] = useState(false);
+  const [playVideo, setPlayVideo] = useState(false);
   const {
     upcoming,
     mission_name,
@@ -58,7 +61,10 @@ const Launch = ({launch}) => {
     },
   } = launch;
 
-  console.log(JSON.stringify(launch, null, 2));
+  useEffect(() => {
+    navigation.setParams({launchTitle: mission_name});
+  }, []);
+  const videoLinkUrl = video_link && parse(video_link);
 
   return (
     <Container>
@@ -106,24 +112,34 @@ const Launch = ({launch}) => {
           <CardItem header>
             <H2>Media</H2>
           </CardItem>
-          <Grid style={{padding: 10}}>
+          <CardItem>
             {
               flickr_images.map((uri) => (
-                <Col key={uri}>
-                  <TouchableOpacity onPress={() => setShowImageModal(true)}>
-                    <Thumbnail
-                      source={{uri}} />
-                  </TouchableOpacity>
-                </Col>
+                <TouchableOpacity key={uri} onPress={() => setShowImageModal(true)}>
+                  <Thumbnail source={{uri}} style={{marginRight: 10, marginBottom: 10}} />
+                </TouchableOpacity>
               ))
             }
-          </Grid>
+          </CardItem>
           <Modal
             visible={showImageModal}
-            onCancel={() => setShowImageModal(false)}>
+            onCancel={() => setShowImageModal(false)}
+            onClick={() => setShowImageModal(false)}>
             <ImageViewer
               imageUrls={flickr_images.map((url) => ({url}))} />
           </Modal>
+          {
+            videoLinkUrl && (
+              <View style={{flex: 1}}>
+                <WebView
+                  height={300}
+                  style={{margin: 15}}
+                  source={{uri: `https://www.youtube.com/embed/${videoLinkUrl.query.v || videoLinkUrl.pathname.replace('/', '')}`}}
+                  javaScriptEnabled={true}
+                  domStorageEnabled={true} />
+              </View>
+            )
+          }
         </Card>
       </Content>
     </Container>

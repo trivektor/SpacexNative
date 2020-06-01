@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Spinner} from 'native-base';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/react-hooks';
@@ -84,14 +84,18 @@ const LAUNCH_QUERY = gql`
 `;
 
 // TODO: error handling
-const LaunchLoader = ({route}) => {
+const LaunchLoader = ({route, navigation}) => {
   const {params: {id}} = route;
   const {data, loading} = useQuery(LAUNCH_QUERY, {variables: {id}});
 
-  if (loading) return <Spinner />;
+  useEffect(() => {
+    navigation.setParams({launchTitle: 'Loading...'});
+  }, []);
+
+  if (loading) return <Spinner color='black' />;
 
   return (
-    <Launch launch={data.launch} />
+    <Launch launch={data.launch} navigation={navigation} />
   );
 };
 

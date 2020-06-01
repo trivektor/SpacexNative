@@ -24,7 +24,7 @@ const LAUNCHPADS_QUERY = gql`
 const LaunchpadsLoader = () => {
   const {data, loading} = useQuery(LAUNCHPADS_QUERY);
 
-  if (loading) return <Spinner />;
+  if (loading) return <Spinner color='black' />;
 
   return <Launchpads launchpads={data.launchpads} />;
 };
