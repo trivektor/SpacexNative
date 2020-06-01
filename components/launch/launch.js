@@ -1,7 +1,11 @@
-import React from 'react';
-import {Container, Content, Text, Card, CardItem, Body, H2} from 'native-base';
-import JSONTree from 'react-native-json-tree'
+import React, {useState} from 'react';
+import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail} from 'native-base';
+import JSONTree from 'react-native-json-tree';
+import {TouchableOpacity} from 'react-native';
 import {format} from 'date-fns';
+import {Col, Row, Grid} from 'react-native-easy-grid';
+import {Modal} from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 import {DATE_FORMAT} from '../../constants';
 
@@ -34,6 +38,7 @@ const JSON_TREE_PROPS = {
 };
 
 const Launch = ({launch}) => {
+  const [showImageModal, setShowImageModal] = useState(false);
   const {
     upcoming,
     mission_name,
@@ -48,7 +53,8 @@ const Launch = ({launch}) => {
       site_name_long,
     },
     links: {
-      flickr_images
+      flickr_images,
+      video_link,
     },
   } = launch;
 
@@ -74,8 +80,6 @@ const Launch = ({launch}) => {
           <CardItem>
             <Text>{details || 'No details found'}</Text>
           </CardItem>
-        </Card>
-        <Card>
           <CardItem header>
             <H2>Rocket</H2>
           </CardItem>
@@ -99,6 +103,27 @@ const Launch = ({launch}) => {
                 data={second_stage} />
             </Content>
           </CardItem>
+          <CardItem header>
+            <H2>Media</H2>
+          </CardItem>
+          <Grid style={{padding: 10}}>
+            {
+              flickr_images.map((uri) => (
+                <Col key={uri}>
+                  <TouchableOpacity onPress={() => setShowImageModal(true)}>
+                    <Thumbnail
+                      source={{uri}} />
+                  </TouchableOpacity>
+                </Col>
+              ))
+            }
+          </Grid>
+          <Modal
+            visible={showImageModal}
+            onCancel={() => setShowImageModal(false)}>
+            <ImageViewer
+              imageUrls={flickr_images.map((url) => ({url}))} />
+          </Modal>
         </Card>
       </Content>
     </Container>
