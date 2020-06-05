@@ -22,6 +22,8 @@ const client = new ApolloClient({
 
 const Stack = createStackNavigator();
 
+console.disableYellowBox = true;
+
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
