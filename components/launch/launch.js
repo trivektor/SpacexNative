@@ -1,7 +1,7 @@
-import React, {Fragment, useState, useEffect, useRef} from 'react';
-import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail, Button} from 'native-base';
+import React, {Fragment, useState, useEffect, useRef, useCallback} from 'react';
+import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail, Button, Icon} from 'native-base';
 import JSONTree from 'react-native-json-tree';
-import {TouchableOpacity, Dimensions, View} from 'react-native';
+import {TouchableOpacity, TouchableHighlight, Dimensions, View} from 'react-native';
 import {format} from 'date-fns';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Modal} from 'react-native';
@@ -60,6 +60,9 @@ const Launch = ({launch, navigation}) => {
       video_link,
     },
   } = launch;
+  const toggleImageModal = useCallback(() => {
+    setShowImageModal(!showImageModal);
+  }, [showImageModal, setShowImageModal]);
 
   useEffect(() => {
     navigation.setParams({launchTitle: mission_name});
@@ -115,18 +118,22 @@ const Launch = ({launch, navigation}) => {
           <CardItem>
             {
               flickr_images.map((uri) => (
-                <TouchableOpacity key={uri} onPress={() => setShowImageModal(true)}>
+                <TouchableOpacity key={uri} onPress={toggleImageModal}>
                   <Thumbnail source={{uri}} style={{marginRight: 10, marginBottom: 10}} />
                 </TouchableOpacity>
               ))
             }
           </CardItem>
           <Modal
-            visible={showImageModal}
-            onCancel={() => setShowImageModal(false)}
-            onClick={() => setShowImageModal(false)}>
+            visible={showImageModal}>
             <ImageViewer
               imageUrls={flickr_images.map((url) => ({url}))} />
+            <View style={{position: 'absolute', top: 32, right: 20}}>
+              <TouchableHighlight onPress={toggleImageModal}>
+                <Icon type="AntDesign" name="closecircleo" style={{color: "#fff"}} />
+              </TouchableHighlight>
+            </View>
+
           </Modal>
           {
             videoLinkUrl && (
