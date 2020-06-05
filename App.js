@@ -6,8 +6,9 @@
  * @flow strict-local
  */
 
-import React from 'react';
-
+import React, {useEffect} from 'react';
+import {StatusBar} from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import {ApolloProvider} from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
 import {NavigationContainer} from '@react-navigation/native';
@@ -22,6 +23,10 @@ const client = new ApolloClient({
 const Stack = createStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
