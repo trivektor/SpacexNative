@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>SpacexNative</string>
+	<string>Spacex Archives</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -70,6 +70,6 @@
 	  <string>SimpleLineIcons.ttf</string>
 	  <string>Octicons.ttf</string>
 	  <string>Zocial.ttf</string>
-	</array>	
+	</array>
 </dict>
 </plist>
