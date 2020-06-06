@@ -3,7 +3,6 @@ import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail, Button, I
 import JSONTree from 'react-native-json-tree';
 import {TouchableOpacity, TouchableHighlight, Dimensions, View} from 'react-native';
 import {format} from 'date-fns';
-import {Col, Row, Grid} from 'react-native-easy-grid';
 import {Modal} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { WebView } from 'react-native-webview';
@@ -43,7 +42,6 @@ const Launch = ({launch, navigation}) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [playVideo, setPlayVideo] = useState(false);
   const {
-    upcoming,
     mission_name,
     details,
     launch_date_unix,
@@ -60,6 +58,7 @@ const Launch = ({launch, navigation}) => {
       video_link,
     },
   } = launch;
+  const upcoming = launch_date_unix * 1000 > Date.now();
   const toggleImageModal = useCallback(() => {
     setShowImageModal(!showImageModal);
   }, [showImageModal, setShowImageModal]);

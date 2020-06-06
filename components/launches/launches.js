@@ -1,54 +1,105 @@
-import React from 'react';
+import React, {useCallback} from 'react';
+import {VirtualizedList, View, TouchableOpacity, ShadowPropSlider} from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
-import {List, Text} from 'native-base';
+import {List, Text, Thumbnail, Icon} from 'native-base';
 import {format} from 'date-fns';
+import {Col, Row, Grid} from 'react-native-easy-grid';
 
-import {DATE_FORMAT} from '../../constants';
+import {DATE_FORMAT, SPACEX_LOGO_URL} from '../../constants';
 
 const LaunchListItem = ({
-  id,
-  mission_name,
-  launch_date_unix,
-  links,
-  upcoming,
+  launch,
   navigation,
 }) => {
-  const leftAvatarUri = links.flickr_images[0] || 'https://www.spacex.com/static/images/share.jpg';
+  const {
+    id,
+    mission_name,
+    launch_date_unix,
+    launch_site: {
+      site_name_long,
+    },
+    links: {
+      flickr_images,
+      mission_patch_small,
+    },
+    rocket: {
+      rocket_name,
+      rocket_type,
+    },
+  } = launch;
+  const upcoming = launch_date_unix * 1000 > Date.now();
+  const leftAvatarUri = flickr_images[0] || 'https://www.spacex.com/static/images/share.jpg';
   const leftAvatar = (
     <Avatar
       rounded
       source={{uri: leftAvatarUri}}
     />
   );
-  const title = (
-    <Text style={{fontWeight: 'bold'}}>
-      {mission_name}
-      {" "}
-      {upcoming && <Text style={{color: 'green'}}>(upcoming)</Text>}
-    </Text>
-  );
-  const subtitle = format(launch_date_unix * 1000, DATE_FORMAT);
-  const onPress = () => {
+  const onPress = useCallback(() => {
     navigation.navigate('Launch', {id});
-  };
+  }, [navigation, id]);
 
   return (
-    <ListItem
-      bottomDivider
-      leftAvatar={leftAvatar}
-      title={title}
-      subtitle={subtitle}
-      onPress={onPress} />
+    <TouchableOpacity onPress={onPress}>
+      <View
+        style={{
+          borderRadius: 10,
+          backgroundColor: "#fff",
+          padding: 20,
+          margin: 8,
+        }}>
+        <Grid>
+          <Col style={{width: 100}}>
+            <View style={{marginTop: 5}}>
+              {mission_patch_small ? (
+                <Thumbnail
+                  large
+                  source={{uri: mission_patch_small}} />
+              ) : (
+                <Thumbnail
+                  large
+                  source={{uri: SPACEX_LOGO_URL}} />
+              )}
+            </View>
+          </Col>
+          <Col>
+            <View>
+              <Text style={{fontWeight: "600", fontSize: 20}}>
+                {mission_name}
+                {" "}
+                {upcoming && <Text style={{color: "green"}}>(upcoming)</Text>}
+              </Text>
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text>🗓 {format(launch_date_unix * 1000, DATE_FORMAT)}</Text>
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text>📍 {site_name_long}</Text>
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text>🚀 {rocket_name} ({rocket_type})</Text>
+            </View>
+          </Col>
+        </Grid>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const Launches = ({launches, navigation}) => {
-  return launches.map(
-    (launch) => (
-      <LaunchListItem
-        key={launch.id}
-        navigation={navigation} {...launch} />
-    )
+  return (
+    <View style={{padding: 8, backgroundColor: "#eee"}}>
+      <VirtualizedList
+        data={launches}
+        getItemCount={(data) => data.length}
+        getItem={(data, index) => data[index]}
+        keyExtractor={(item) => item.id}
+        renderItem={({item}) => (
+          <LaunchListItem
+            launch={item}
+            navigation={navigation} />
+        )} />
+    </View>
   );
 };
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {SafeAreaView} from 'react-native';
 import {Spinner} from 'native-base';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/react-hooks';
@@ -10,15 +11,20 @@ const LAUNCHES_QUERY = gql`
   {
     launches {
       id
-      upcoming
       mission_name
       launch_date_unix
       launch_year
+      launch_date_local
       launch_site {
-        site_name
+        site_name_long
+      }
+      rocket {
+        rocket_name
+        rocket_type
       }
       links {
         flickr_images
+        mission_patch_small
       }
     }
   }
@@ -30,9 +36,11 @@ const LaunchesLoader = ({navigation}) => {
   if (loading) return <Spinner color='black' />;
 
   return (
-    <Launches
-      navigation={navigation}
-      launches={sortBy(data.launches, 'launch_date_unix').reverse()} />
+    <SafeAreaView style={{padding: 20, backgroundColor: "#eee"}}>
+      <Launches
+        navigation={navigation}
+        launches={sortBy(data.launches, 'launch_date_unix').reverse()} />
+    </SafeAreaView>
   );
 };
 
