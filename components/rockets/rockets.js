@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react';
 import {VirtualizedList, View, TouchableOpacity, SafeAreaView, Text} from 'react-native';
+import {Button} from 'native-base';
 
 import style from '../../style';
 
@@ -18,25 +19,31 @@ const RocketListItem = ({
   }, [navigation, id]);
   
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={style.card}>
-        <View style={{marginBottom: 8}}>
-          <Text style={{...style.text, fontSize: 25, fontWeight: "600"}}>
-            {name}
-          </Text>
-        </View>
-        <View style={{marginBottom: 8}}>
-          <Text style={style.text}>
-            Success Rate: {success_rate_pct}%
-          </Text>
-        </View>
-        <View>
-          <Text style={style.text}>
-            {description}
-          </Text>
-        </View>
+    <View style={style.card}>
+      <View style={{marginBottom: 8}}>
+        <Text style={{...style.text, fontSize: 40, fontWeight: "600"}}>
+          {name}
+        </Text>
       </View>
-    </TouchableOpacity>
+      <View style={{marginBottom: 8}}>
+        <Text style={style.text}>
+          Success Rate: {success_rate_pct}%
+        </Text>
+      </View>
+      <View style={{marginBottom: 16}}>
+        <Text style={style.text}>
+          {description}
+        </Text>
+      </View>
+      <Button 
+          full
+          style={{padding: 20, backgroundColor: '#505A5B', borderRadius: 8}} 
+          onPress={onPress}>
+          <Text style={{...style.text, fontSize: 20, align: 'center'}}>
+            Learn more about this rocket
+          </Text>
+        </Button>
+    </View>
   );
 };
 

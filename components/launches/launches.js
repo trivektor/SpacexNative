@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {SafeAreaView, VirtualizedList, View, TouchableOpacity, Text} from 'react-native';
-import {Thumbnail} from 'native-base';
+import {Thumbnail, Button} from 'native-base';
 import {format} from 'date-fns';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
@@ -33,55 +33,52 @@ const LaunchListItem = ({
   }, [navigation, id]);
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={style.card}>
-        <Grid>
-          <Col style={{width: 100}}>
-            <View style={{marginTop: 5}}>
-              {mission_patch_small ? (
-                <Thumbnail
-                  large
-                  source={{uri: mission_patch_small}} />
-              ) : (
-                <Thumbnail
-                  large
-                  source={{uri: SPACEX_LOGO_URL}} />
-              )}
-            </View>
-          </Col>
-          <Col>
-            <View>
-              <Text style={{...style.text, fontSize: 25}}>
-                <Text style={{fontWeight: '600'}}>{mission_name}</Text>
-                {' '}
-                {upcoming && <Text style={{color: '#E8442E'}}>upcoming</Text>}
-              </Text>
-            </View>
-            <View style={{marginTop: 10}}>
-              <Text style={style.text}>
-                <Text style={{fontWeight: '600'}}>Date:</Text>
-                {' '}
-                {format(launch_date_unix * 1000, DATE_FORMAT)}
-              </Text>
-            </View>
-            <View style={{marginTop: 10}}>
-              <Text style={style.text}>
-                <Text style={{fontWeight: '600'}}>Location:</Text>
-                {' '}
-                {site_name_long}
-              </Text>
-            </View>
-            <View style={{marginTop: 10}}>
-              <Text style={style.text}>
-                <Text style={{fontWeight: '600'}}>Rocket:</Text>
-                {' '}
-                {rocket_name} ({rocket_type})
-              </Text>
-            </View>
-          </Col>
-        </Grid>
+    <View style={style.card}>
+      <Grid>
+        <Col>
+          <Text style={{...style.text, fontWeight: '600', fontSize: 38}}>{mission_name}</Text>
+          <View>
+            {upcoming && <Text style={{...style.text, color: '#E8442E'}}>Upcoming</Text>}
+          </View>
+        </Col>
+        <Col style={{width: 90}}>
+          <Thumbnail
+            large
+            source={{uri: mission_patch_small || SPACEX_LOGO_URL}} />
+        </Col>
+      </Grid>
+      <View style={{marginTop: 10}}>
+        <Text style={style.text}>
+          <Text style={{fontWeight: '700'}}>Date:</Text>
+          {' '}
+          {format(launch_date_unix * 1000, DATE_FORMAT)}
+        </Text>
       </View>
-    </TouchableOpacity>
+      <View style={{marginTop: 8}}>
+        <Text style={style.text}>
+          <Text style={{fontWeight: '700'}}>Location:</Text>
+          {' '}
+          {site_name_long}
+        </Text>
+      </View>
+      <View style={{marginTop: 8}}>
+        <Text style={style.text}>
+          <Text style={{fontWeight: '700'}}>Rocket:</Text>
+          {' '}
+          {rocket_name} ({rocket_type})
+        </Text>
+      </View>      
+      <View style={{marginTop: 24}}>
+        <Button 
+          full
+          style={{padding: 20, backgroundColor: '#505A5B', borderRadius: 8}} 
+          onPress={onPress}>
+          <Text style={{...style.text, fontSize: 20, align: 'center'}}>
+            Learn more about this launch
+          </Text>
+        </Button>
+      </View>
+    </View>
   );
 }
 
