@@ -1,6 +1,5 @@
 import React, {useCallback} from 'react';
-import {VirtualizedList, View, TouchableOpacity, SafeAreaView} from 'react-native';
-import {Container, Content, Text} from 'native-base';
+import {VirtualizedList, View, TouchableOpacity, SafeAreaView, Text} from 'react-native';
 
 import style from '../../style';
 
@@ -22,13 +21,19 @@ const RocketListItem = ({
     <TouchableOpacity onPress={onPress}>
       <View style={style.card}>
         <View style={{marginBottom: 8}}>
-          <Text style={{fontSize: 24, fontWeight: "600"}}>{name}</Text>
+          <Text style={{...style.text, fontSize: 25, fontWeight: "600"}}>
+            {name}
+          </Text>
         </View>
         <View style={{marginBottom: 8}}>
-          <Text style={{fontSize: 20}}>Success Rate: {success_rate_pct}%</Text>
+          <Text style={style.text}>
+            Success Rate: {success_rate_pct}%
+          </Text>
         </View>
         <View>
-          <Text style={{fontSize: 20}}>{description}</Text>
+          <Text style={style.text}>
+            {description}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

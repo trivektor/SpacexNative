@@ -51,20 +51,32 @@ const LaunchListItem = ({
           </Col>
           <Col>
             <View>
-              <Text style={{fontWeight: "600", fontSize: 25}}>
-                {mission_name}
-                {" "}
-                {upcoming && <Text style={{color: "green"}}>(upcoming)</Text>}
+              <Text style={{...style.text, fontSize: 25}}>
+                <Text style={{fontWeight: '600'}}>{mission_name}</Text>
+                {' '}
+                {upcoming && <Text style={{color: '#E8442E'}}>upcoming</Text>}
               </Text>
             </View>
-            <View style={{marginTop: 10, fontSize: 20}}>
-              <Text>🗓 {format(launch_date_unix * 1000, DATE_FORMAT)}</Text>
+            <View style={{marginTop: 10}}>
+              <Text style={style.text}>
+                <Text style={{fontWeight: '600'}}>Date:</Text>
+                {' '}
+                {format(launch_date_unix * 1000, DATE_FORMAT)}
+              </Text>
             </View>
-            <View style={{marginTop: 10, fontSize: 20}}>
-              <Text>📍 {site_name_long}</Text>
+            <View style={{marginTop: 10}}>
+              <Text style={style.text}>
+                <Text style={{fontWeight: '600'}}>Location:</Text>
+                {' '}
+                {site_name_long}
+              </Text>
             </View>
-            <View style={{marginTop: 10, fontSize: 20}}>
-              <Text>🚀 {rocket_name} ({rocket_type})</Text>
+            <View style={{marginTop: 10}}>
+              <Text style={style.text}>
+                <Text style={{fontWeight: '600'}}>Rocket:</Text>
+                {' '}
+                {rocket_name} ({rocket_type})
+              </Text>
             </View>
           </Col>
         </Grid>
