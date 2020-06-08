@@ -31,16 +31,16 @@ const LAUNCHES_QUERY = gql`
 `;
 
 const LaunchesLoader = ({navigation}) => {
-  const {data, loading} = useQuery(LAUNCHES_QUERY);
+  const {data, loading} = useQuery(LAUNCHES_QUERY, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading) return <Spinner color='black' />;
 
   return (
-    <SafeAreaView style={{padding: 20, backgroundColor: "#f5f5f5"}}>
-      <Launches
-        navigation={navigation}
-        launches={sortBy(data.launches, 'launch_date_unix').reverse()} />
-    </SafeAreaView>
+    <Launches
+      navigation={navigation}
+      launches={sortBy(data.launches, 'launch_date_unix').reverse()} />
   );
 };
 

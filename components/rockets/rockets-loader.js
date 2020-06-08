@@ -18,15 +18,19 @@ const ROCKETS_QUERY = gql`
   }
 `;
 
-const RocketsLoader = () => {
-  const {data, loading} = useQuery(ROCKETS_QUERY);
+const RocketsLoader = ({navigation}) => {
+  const {data, loading} = useQuery(ROCKETS_QUERY, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading) return <Spinner />;
 
   const {rockets} = data;
 
   return (
-    <Rockets rockets={rockets} />
+    <Rockets 
+      navigation={navigation} 
+      rockets={rockets} />
   );
 };
 

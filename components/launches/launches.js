@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
-import {VirtualizedList, View, TouchableOpacity, ShadowPropSlider} from 'react-native';
+import {VirtualizedList, View, TouchableOpacity, Text} from 'react-native';
 import {ListItem, Avatar} from 'react-native-elements';
-import {List, Text, Thumbnail, Icon} from 'native-base';
+import {Container, Content, Thumbnail} from 'native-base';
 import {format} from 'date-fns';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
@@ -83,18 +83,20 @@ const LaunchListItem = ({
 
 const Launches = ({launches, navigation}) => {
   return (
-    <View style={{padding: 8, backgroundColor: "#f5f5f5"}}>
-      <VirtualizedList
-        data={launches}
-        getItemCount={(data) => data.length}
-        getItem={(data, index) => data[index]}
-        keyExtractor={(item) => item.id}
-        renderItem={({item}) => (
-          <LaunchListItem
-            launch={item}
-            navigation={navigation} />
-        )} />
-    </View>
+    <Container style={{backgroundColor: '#f5f5f5', padding: 8}}>
+      <Content>
+        <VirtualizedList
+          data={launches}
+          getItemCount={(data) => data.length}
+          getItem={(data, index) => data[index]}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => (
+            <LaunchListItem
+              launch={item}
+              navigation={navigation} />
+          )} />
+      </Content>
+    </Container>
   );
 };
 
