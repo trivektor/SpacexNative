@@ -15,6 +15,7 @@ const LaunchListItem = ({
     id,
     mission_name,
     launch_date_unix,
+    launch_success,
     launch_site: {
       site_name_long,
     },
@@ -35,13 +36,13 @@ const LaunchListItem = ({
   return (
     <View style={style.card}>
       <Grid>
-        <Col>
+        <Col style={{paddingRight: 10}}>
           <Text style={{...style.text, fontWeight: '600', fontSize: 38}}>{mission_name}</Text>
           <View>
             {upcoming && <Text style={{...style.text, color: '#E8442E'}}>Upcoming</Text>}
           </View>
         </Col>
-        <Col style={{width: 90}}>
+        <Col style={{width: 80}}>
           <Thumbnail
             large
             source={{uri: mission_patch_small || SPACEX_LOGO_URL}} />
@@ -67,7 +68,21 @@ const LaunchListItem = ({
           {' '}
           {rocket_name} ({rocket_type})
         </Text>
-      </View>      
+      </View>
+      {
+        !upcoming && (
+          <View style={{marginTop: 8}}>
+            <Text style={style.text}>
+              <Text style={{fontWeight: '700'}}>Result:</Text>
+              {' '}
+              {launch_success 
+                ? <Text style={{color: "#7BE0AD"}}>Successful</Text> 
+                : <Text style={{color: "#D90368"}}>Failed</Text>
+              }
+            </Text>
+          </View>          
+        )
+      }      
       <View style={{marginTop: 24}}>
         <Button 
           full

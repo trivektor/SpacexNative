@@ -78,6 +78,7 @@ const LAUNCH_QUERY = gql`
         article_link
         video_link
         wikipedia
+        mission_patch
       }
     }
   }

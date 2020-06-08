@@ -8,7 +8,7 @@ import {WebView} from 'react-native-webview';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import parse from 'url-parse';
 
-import {DATE_FORMAT} from '../../constants';
+import {DATE_FORMAT, SPACEX_LOGO_URL} from '../../constants';
 import style from '../../style';
 
 const Launch = ({launch, navigation}) => {
@@ -18,6 +18,7 @@ const Launch = ({launch, navigation}) => {
     mission_name,
     details,
     launch_date_unix,
+    launch_success,
     rocket: {
       rocket_name,
       first_stage,
@@ -29,6 +30,7 @@ const Launch = ({launch, navigation}) => {
     links: {
       flickr_images,
       video_link,
+      mission_patch,
     },
   } = launch;
   const upcoming = launch_date_unix * 1000 > Date.now();
@@ -43,113 +45,140 @@ const Launch = ({launch, navigation}) => {
 
   return (
     <Container>
-      <Content style={{backgroundColor: "#f5f5f5", padding: 16}}>
-        <View style={{...style.card, padding: 0}}>
-      <View style={headingStyle}>
-        <Text style={headingTextStyle}>MISSION</Text>
-      </View>
-      <View style={{padding: 24}}>
-        <View>
-          <Text style={style.text}>Name: {mission_name}</Text>
-        </View>
-        <View>
-          <Text style={style.text}>
-            Date: {format(launch_date_unix * 1000, DATE_FORMAT)}
-            {' '}
-            {upcoming && (
-            <Text style={{color: 'green'}}>
-              (upcoming)
+      <Content style={{backgroundColor: "#f5f5f5", padding: 8}}>
+        <View style={style.card}>
+          <View style={{marginBottom: 8}}>
+            <Grid>
+              <Col style={{paddingRight: 10}}>
+                <Text style={{...style.text, fontSize: 42, fontWeight: "600"}}>
+                  {mission_name}
+                </Text>
+                {upcoming && <Text style={{...style.text, color: '#E8442E'}}>Upcoming</Text>}
+              </Col>
+              <Col style={{width: 80}}>
+                <Thumbnail large source={{uri: mission_patch || SPACEX_LOGO_URL}} />
+              </Col>
+            </Grid>
+          </View>
+          <View style={{marginBottom: 8}}>
+            <Text style={style.text}>
+              <Text style={{fontWeight: "700"}}>Date:</Text>
+              {" "}
+              {format(launch_date_unix * 1000, DATE_FORMAT)}
             </Text>
-          )}
-          </Text>
-        </View>
-        <View>
-          <Text style={style.text}>Location: {site_name_long}</Text>
-        </View>
-        <View>
-          <Text style={style.text}>{details || 'No details found'}</Text>
-        </View>
-      </View>
-    </View>
-        <View style={{...style.card, padding: 0}}>
-      <View style={headingStyle}>
-        <Text style={headingTextStyle}>ROCKET</Text>
-      </View>
-      <View style={{padding: 16}}>
-        <View style={{marginBottom: 10}}>
-          <Text style={style.text}>First Stage Cores</Text>
-        </View>
-        <View>
+          </View>
+          <View style={{marginBottom: 8}}>
+            <Text style={style.text}>
+              <Text style={{fontWeight: "700"}}>Location:</Text>
+              {" "}
+              {site_name_long}
+            </Text>
+          </View>
           {
-            first_stage.cores.map((core, index) => {
-              const {
-                flight,
-                block,
-                gridfins,
-                legs,
-                reused,
-                landing_intent,
-                landing_type,
-                landing_vehicle,
-              } = core;
-
-              return (
-                <Grid key={index} style={gridStyle.grid}>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Flight</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{flight || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Block</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{block || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Gridfins</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{gridfins || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Legs</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{legs || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Reused</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{reused || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Landing Intent</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{landing_intent || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                </Grid>
-              );
-            })
-          }
+            !upcoming && (
+              <View style={{marginBottom: 8}}>
+                <Text style={style.text}>
+                  <Text style={{fontWeight: '700'}}>Result:</Text>
+                  {' '}
+                  {launch_success 
+                    ? <Text style={{color: "#7BE0AD"}}>Successful</Text> 
+                    : <Text style={{color: "#D90368"}}>Failed</Text>
+                  }
+                </Text>
+              </View>          
+            )
+          }                
+          <View>
+            <Text style={style.text}>
+              <Text style={{fontWeight: "700"}}>Details:</Text>
+              {" "}
+              <Text>
+                {details || "No details found"}
+              </Text>
+            </Text>
+          </View>
         </View>
+        <View style={{...style.card, marginTop: 16}}>
+          <View style={{marginBottom: 10}}>
+            <Text style={{...style.text, fontSize: 38, fontWeight: "600"}}>
+              Rocket
+            </Text>
+          </View>
+          <View>
+            <View style={{marginBottom: 10}}>
+              <Text style={style.text}>1st Stage Cores</Text>
+            </View>
+            <View>
+              {
+                first_stage.cores.map((core, index) => {
+                  const {
+                    flight,
+                    block,
+                    gridfins,
+                    legs,
+                    reused,
+                    landing_intent,
+                    landing_type,
+                    landing_vehicle,
+                  } = core;
+
+                  return (
+                    <Grid key={index} style={{...gridStyle.grid, marginBottom: 8}}>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Flight</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{flight || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Block</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{block || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Gridfins</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{gridfins || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Legs</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{legs || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Reused</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{reused || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Landing Intent</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{landing_intent || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                    </Grid>
+                  );
+                })
+              }
+            </View>
         <View style={{marginTop: 10, marginBottom: 10}}>
-          <Text style={style.text}>Second Stage Payloads</Text>
+          <Text style={style.text}>2nd Stage Payloads</Text>
         </View>
         <View>
           {
@@ -174,13 +203,13 @@ const Launch = ({launch, navigation}) => {
               } = orbit_params;
               
               return (
-                <Grid key={index} style={gridStyle.grid}>
+                <Grid key={index} style={{...gridStyle.grid, marginBottom: 8}}>
                   <Row style={gridStyle.row}>
                     <Col style={gridStyle.firstCol}>
                       <Text style={gridStyle.text}>Manufacturer</Text>
                     </Col>
                     <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{manufacturer}</Text>
+                      <Text style={gridStyle.text}>{manufacturer || 'n/a'}</Text>
                     </Col>
                   </Row>
                   <Row style={gridStyle.row}>
@@ -188,7 +217,7 @@ const Launch = ({launch, navigation}) => {
                       <Text style={gridStyle.text}>Payload Type</Text>
                     </Col>
                     <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{payload_type}</Text>
+                      <Text style={gridStyle.text}>{payload_type || 'n/a'}</Text>
                     </Col>
                   </Row>
                   <Row style={gridStyle.row}>
@@ -196,7 +225,7 @@ const Launch = ({launch, navigation}) => {
                       <Text style={gridStyle.text}>Payload (kg)</Text>
                     </Col>
                     <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{payload_mass_kg}</Text>
+                      <Text style={gridStyle.text}>{payload_mass_kg || 'n/a'}</Text>
                     </Col>
                   </Row>
                   <Row style={gridStyle.row}>
@@ -204,7 +233,7 @@ const Launch = ({launch, navigation}) => {
                       <Text style={gridStyle.text}>Payload (lbs)</Text>
                     </Col>
                     <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{payload_mass_lbs}</Text>
+                      <Text style={gridStyle.text}>{payload_mass_lbs || 'n/a'}</Text>
                     </Col>
                   </Row>
                   <Row style={gridStyle.row}>
@@ -212,42 +241,42 @@ const Launch = ({launch, navigation}) => {
                       <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>Orbit Params</Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Reference System: {reference_system || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Regime: {regime || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Longitude: {longitude || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Semi Major Axis (km): {semi_major_axis_km || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Eccentricity: {eccentricity || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Periapsis (km): {periapsis_km || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Apoapsis (km): {apoapsis_km || 'n/a'}
                         </Text>
                       </View>
-                      <View>
+                      <View style={{marginBottom: 8}}>
                         <Text style={gridStyle.text}>
                           Inclination (deg): {inclination_deg || 'n/a'}
                         </Text>
@@ -260,40 +289,40 @@ const Launch = ({launch, navigation}) => {
           }
         </View>
       </View>
-    </View>
-        <View style={{...style.card, padding: 0}}>
-        <View style={headingStyle}>
-          <Text style={headingTextStyle}>MEDIA</Text>
         </View>
-        <View style={{padding: 16}}>
-          {
-            flickr_images.length > 0 && (
-              <Grid style={{marginBottom: 16}}>
-                {
-                  flickr_images.map((uri) => (
-                    <Col key={uri}>
-                      <TouchableOpacity onPress={toggleImageModal}>
-                        <Thumbnail source={{uri}} />
-                      </TouchableOpacity>
-                    </Col>
-                  ))
-                }
-              </Grid>
-            )
-          }
-          {
-            videoLinkUrl && (
-              <View>
-                <WebView
-                  height={300}
-                  source={{uri: `https://www.youtube.com/embed/${videoLinkUrl.query.v || videoLinkUrl.pathname.replace('/', '')}`}}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true} />
-              </View>
-            )
-          }          
+        <View style={{...style.card, marginTop: 16}}>
+          <View style={{marginBottom: 8}}>
+            <Text style={{...style.text, fontSize: 38, fontWeight: "600"}}>Media</Text>
+          </View>
+          <View>
+            {
+              flickr_images.length > 0 && (
+                <Grid style={{marginBottom: 16}}>
+                  {
+                    flickr_images.map((uri) => (
+                      <Col key={uri}>
+                        <TouchableOpacity onPress={toggleImageModal}>
+                          <Thumbnail source={{uri}} />
+                        </TouchableOpacity>
+                      </Col>
+                    ))
+                  }
+                </Grid>
+              )
+            }
+            {
+              videoLinkUrl && (
+                <View>
+                  <WebView
+                    height={300}
+                    source={{uri: `https://www.youtube.com/embed/${videoLinkUrl.query.v || videoLinkUrl.pathname.replace('/', '')}`}}
+                    javaScriptEnabled={true}
+                    domStorageEnabled={true} />
+                </View>
+              )
+            }          
+          </View>
         </View>
-      </View>
       </Content>
       <Modal
         visible={showImageModal}>
@@ -304,26 +333,9 @@ const Launch = ({launch, navigation}) => {
             <Icon type="AntDesign" name="closecircleo" style={{color: "#fff"}} />
           </TouchableHighlight>
         </View>
-
       </Modal>
     </Container>
   );
-};
-
-const headingStyle = {
-  paddingTop: 12, 
-  paddingBottom: 12,
-  paddingLeft: 24, 
-  paddingRight: 24,
-  backgroundColor: '#111', 
-  borderTopLeftRadius: 10, 
-  borderTopRightRadius: 10,
-  fontSize: 20,
-};
-
-const headingTextStyle = {
-  fontSize: 20,
-  color: '#fff',
 };
 
 const gridStyle = StyleSheet.create({
@@ -346,6 +358,7 @@ const gridStyle = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    color: "#fff",
   },
 });
 

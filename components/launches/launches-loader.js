@@ -15,6 +15,7 @@ const LAUNCHES_QUERY = gql`
       launch_date_unix
       launch_year
       launch_date_local
+      launch_success
       launch_site {
         site_name_long
       }
