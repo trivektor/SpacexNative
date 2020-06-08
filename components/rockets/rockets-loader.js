@@ -23,7 +23,7 @@ const RocketsLoader = ({navigation}) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  if (loading) return <Spinner />;
+  if (loading) return <Spinner color="black" />;
 
   const {rockets} = data;
 
