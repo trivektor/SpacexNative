@@ -3,10 +3,12 @@ import {Container, Header, Body, Title, Footer, FooterTab, Button, Text, Content
 
 import Launchpads from './launchpads';
 import Launches from './launches';
+import Rockets from './rockets';
 
 const COMPONENT_MAPPINGS = {
   launchpads: Launchpads,
   launches: Launches,
+  rockets: Rockets,
 };
 
 const Home = ({navigation}) => {
@@ -31,6 +33,12 @@ const Home = ({navigation}) => {
             onPress={() => setActiveTab("launches")}>
             <Icon type="Octicons" name="dashboard" />
             <Text>Launches</Text>
+          </Button>
+          <Button
+            active={activeTab === "rockets"} 
+            onPress={() => setActiveTab("rockets")}>
+            <Icon type="Octicons" name="rocket" />
+            <Text>Rockets</Text>
           </Button>
         </FooterTab>
       </Footer>

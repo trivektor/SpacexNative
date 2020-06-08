@@ -36,7 +36,7 @@ const LaunchesLoader = ({navigation}) => {
   if (loading) return <Spinner color='black' />;
 
   return (
-    <SafeAreaView style={{padding: 20, backgroundColor: "#eee"}}>
+    <SafeAreaView style={{padding: 20, backgroundColor: "#f5f5f5"}}>
       <Launches
         navigation={navigation}
         launches={sortBy(data.launches, 'launch_date_unix').reverse()} />
