@@ -1,7 +1,6 @@
 import React, {useCallback} from 'react';
-import {VirtualizedList, View, TouchableOpacity, Text} from 'react-native';
-import {ListItem, Avatar} from 'react-native-elements';
-import {Container, Content, Thumbnail} from 'native-base';
+import {SafeAreaView, VirtualizedList, View, TouchableOpacity, Text} from 'react-native';
+import {Thumbnail} from 'native-base';
 import {format} from 'date-fns';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
@@ -29,13 +28,6 @@ const LaunchListItem = ({
     },
   } = launch;
   const upcoming = launch_date_unix * 1000 > Date.now();
-  const leftAvatarUri = flickr_images[0] || 'https://www.spacex.com/static/images/share.jpg';
-  const leftAvatar = (
-    <Avatar
-      rounded
-      source={{uri: leftAvatarUri}}
-    />
-  );
   const onPress = useCallback(() => {
     navigation.navigate('Launch', {id});
   }, [navigation, id]);
@@ -83,8 +75,8 @@ const LaunchListItem = ({
 
 const Launches = ({launches, navigation}) => {
   return (
-    <Container style={{backgroundColor: '#f5f5f5', padding: 8}}>
-      <Content>
+    <SafeAreaView style={{backgroundColor: '#f5f5f5'}}>
+      <View style={{padding: 8}}>
         <VirtualizedList
           data={launches}
           getItemCount={(data) => data.length}
@@ -95,8 +87,8 @@ const Launches = ({launches, navigation}) => {
               launch={item}
               navigation={navigation} />
           )} />
-      </Content>
-    </Container>
+      </View>
+    </SafeAreaView>
   );
 };
 

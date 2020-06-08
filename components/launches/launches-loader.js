@@ -35,7 +35,7 @@ const LaunchesLoader = ({navigation}) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  if (loading) return <Spinner color='black' />;
+  if (loading) return <Spinner color="black" />;
 
   return (
     <Launches
