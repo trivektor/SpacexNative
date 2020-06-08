@@ -59,19 +59,19 @@ const LaunchListItem = ({
           </Col>
           <Col>
             <View>
-              <Text style={{fontWeight: "600", fontSize: 20}}>
+              <Text style={{fontWeight: "600", fontSize: 25}}>
                 {mission_name}
                 {" "}
                 {upcoming && <Text style={{color: "green"}}>(upcoming)</Text>}
               </Text>
             </View>
-            <View style={{marginTop: 10}}>
+            <View style={{marginTop: 10, fontSize: 20}}>
               <Text>🗓 {format(launch_date_unix * 1000, DATE_FORMAT)}</Text>
             </View>
-            <View style={{marginTop: 10}}>
+            <View style={{marginTop: 10, fontSize: 20}}>
               <Text>📍 {site_name_long}</Text>
             </View>
-            <View style={{marginTop: 10}}>
+            <View style={{marginTop: 10, fontSize: 20}}>
               <Text>🚀 {rocket_name} ({rocket_type})</Text>
             </View>
           </Col>

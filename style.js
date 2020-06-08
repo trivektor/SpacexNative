@@ -15,7 +15,7 @@ const style = StyleSheet.create({
     marginBottom: 8,
   },
   text: {
-    fontSize: 17,
+    fontSize: 20,
     marginTop: 2,
     marginBottom: 4,
   },
