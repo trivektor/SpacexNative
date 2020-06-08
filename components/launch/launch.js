@@ -1,14 +1,15 @@
 import React, {Fragment, useState, useEffect, useRef, useCallback} from 'react';
-import {Container, Content, Text, Card, CardItem, Body, H2, Thumbnail, Button, Icon} from 'native-base';
+import {Thumbnail, Button, Icon} from 'native-base';
 import JSONTree from 'react-native-json-tree';
-import {TouchableOpacity, TouchableHighlight, Dimensions, View} from 'react-native';
+import {TouchableOpacity, TouchableHighlight, Dimensions, View, Modal, ScrollView, Text, StyleSheet} from 'react-native';
 import {format} from 'date-fns';
-import {Modal} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { WebView } from 'react-native-webview';
+import {WebView} from 'react-native-webview';
+import {Col, Row, Grid} from 'react-native-easy-grid';
 import parse from 'url-parse';
 
 import {DATE_FORMAT} from '../../constants';
+import style from '../../style';
 
 const JSON_TREE_THEME = {
   scheme: 'monokai',
@@ -37,6 +38,18 @@ const JSON_TREE_PROPS = {
   invertTheme: false,
   shouldExpandNode: () => true,
 };
+
+const CORE_TABLE_TITLE = [
+  'Flight', 
+  'Block', 
+  'Gridfins', 
+  'Legs', 
+  'Reused', 
+  'Landed Successfully', 
+  'Landing Intent', 
+  'Landing Type', 
+  'Landing Vehicle',
+];
 
 const Launch = ({launch, navigation}) => {
   const [showImageModal, setShowImageModal] = useState(false);
@@ -69,87 +82,156 @@ const Launch = ({launch, navigation}) => {
   const videoLinkUrl = video_link && parse(video_link);
 
   return (
-    <Container>
-      <Content>
-        <Card transparent>
-          <CardItem header>
-            <H2>Mission</H2>
-          </CardItem>
-          <CardItem>
-            <Text>Name: {mission_name}</Text>
-          </CardItem>
-          <CardItem>
-            <Text>Date: {format(launch_date_unix * 1000, DATE_FORMAT)}</Text>
-            {upcoming && <Text style={{color: 'green'}}>(upcoming)</Text>}
-          </CardItem>
-          <CardItem>
-            <Text>Location: {site_name_long}</Text>
-          </CardItem>
-          <CardItem>
-            <Text>{details || 'No details found'}</Text>
-          </CardItem>
-          <CardItem header>
-            <H2>Rocket</H2>
-          </CardItem>
-          <CardItem>
-            <Text>First Stage</Text>
-          </CardItem>
-          <CardItem>
-            <Content>
-              <JSONTree
-                {...JSON_TREE_PROPS}
-                data={first_stage} />
-            </Content>
-          </CardItem>
-          <CardItem>
-            <Text>Second Stage</Text>
-          </CardItem>
-          <CardItem>
-            <Content>
-              <JSONTree
-                {...JSON_TREE_PROPS}
-                data={second_stage} />
-            </Content>
-          </CardItem>
-          <CardItem header>
-            <H2>Media</H2>
-          </CardItem>
-          <CardItem>
+    <ScrollView style={{backgroundColor: "#f5f5f5", padding: 8}}>
+      <View style={{...style.card, padding: 0}}>
+        <View style={{padding: 16, backgroundColor: "#42398B", borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+          <Text style={{...style.heading, marginBottom: 0, color: "#fff"}}>Mission</Text>
+        </View>
+        <View style={{padding: 16}}>
+          <View>
+            <Text style={style.text}>Name: {mission_name}</Text>
+          </View>
+          <View>
+            <Text style={style.text}>
+              Date: {format(launch_date_unix * 1000, DATE_FORMAT)}
+              {' '}
+              {upcoming && (
+              <Text style={{color: 'green'}}>
+                (upcoming)
+              </Text>
+            )}
+            </Text>
+          </View>
+          <View>
+            <Text style={style.text}>Location: {site_name_long}</Text>
+          </View>
+          <View>
+            <Text style={style.text}>{details || 'No details found'}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={{...style.card, padding: 0}}>
+        <View style={{padding: 16, backgroundColor: "#42398B", borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+          <Text style={{...style.heading, marginBottom: 0, color: "#fff"}}>
+            Rocket
+          </Text>
+        </View>
+        <View style={{padding: 16}}>
+          <View style={{marginBottom: 10}}>
+            <Text style={style.text}>First Stage Cores</Text>
+          </View>
+          <View>
             {
-              flickr_images.map((uri) => (
-                <TouchableOpacity key={uri} onPress={toggleImageModal}>
-                  <Thumbnail source={{uri}} style={{marginRight: 10, marginBottom: 10}} />
-                </TouchableOpacity>
-              ))
-            }
-          </CardItem>
-          <Modal
-            visible={showImageModal}>
-            <ImageViewer
-              imageUrls={flickr_images.map((url) => ({url}))} />
-            <View style={{position: 'absolute', top: 32, right: 20}}>
-              <TouchableHighlight onPress={toggleImageModal}>
-                <Icon type="AntDesign" name="closecircleo" style={{color: "#fff"}} />
-              </TouchableHighlight>
-            </View>
+              first_stage.cores.map((core, index) => {
+                const {
+                  flight,
+                  block,
+                  gridfins,
+                  legs,
+                  reused,
+                  land_success,
+                  landing_intent,
+                  landing_type,
+                  landing_vehicle,
+                } = core;
 
-          </Modal>
+                return (
+                  <Grid style={{borderWidth: 1, borderColor: "#aaa"}}>
+                    <Row style={{borderColor: "#aaa", borderBottomWidth: 1}}>
+                      <Col style={{padding: 5}}><Text>Flight</Text></Col>
+                      <Col style={{borderColor: "#aaa", borderLeftWidth: 1, padding: 5}}>
+                        <Text>{flight}</Text>
+                      </Col>
+                    </Row>
+                    <Row style={{borderColor: "#aaa", borderBottomWidth: 1}}>
+                      <Col style={{padding: 5}}><Text>Block</Text></Col>
+                      <Col style={{borderColor: "#aaa", borderLeftWidth: 1, padding: 5}}>
+                        <Text>{block}</Text>
+                      </Col>
+                    </Row>
+                    <Row style={{borderColor: "#aaa", borderBottomWidth: 1}}>
+                      <Col style={{padding: 5}}><Text>Gridfins</Text></Col>
+                      <Col style={{borderColor: "#aaa", borderLeftWidth: 1, padding: 5}}>
+                        <Text>{gridfins}</Text>
+                      </Col>
+                    </Row>
+                    <Row style={{borderColor: "#aaa"}}>
+                      <Col style={{padding: 5}}><Text>Legs</Text></Col>
+                      <Col style={{borderColor: "#aaa", borderLeftWidth: 1, padding: 5}}>
+                        <Text>{legs}</Text>
+                      </Col>
+                    </Row>
+                  </Grid>
+                );
+              })
+            }
+          </View>
+          <View style={{marginTop: 10, marginBottom: 10}}>
+            <Text style={style.text}>Second Stage Payloads</Text>
+          </View>
+          <View>
+            <JSONTree
+              {...JSON_TREE_PROPS}
+              data={second_stage} />
+          </View>
+        </View>
+      </View>
+      <View style={{...style.card, padding: 0}}>
+        <View style={{padding: 16, backgroundColor: "#42398B", borderTopLeftRadius: 10, borderTopRightRadius: 10}}>
+          <Text style={{...style.heading, marginBottom: 0, color: "#fff"}}>
+            Media
+          </Text>
+        </View>
+        <View style={{padding: 16}}>
+          {
+            flickr_images.length > 0 && (
+              <Grid style={{marginBottom: 16}}>
+                {
+                  flickr_images.map((uri) => (
+                    <Col key={uri}>
+                      <TouchableOpacity onPress={toggleImageModal}>
+                        <Thumbnail source={{uri}} />
+                      </TouchableOpacity>
+                    </Col>
+                  ))
+                }
+              </Grid>
+            )
+          }
           {
             videoLinkUrl && (
-              <View style={{flex: 1}}>
+              <View>
                 <WebView
                   height={300}
-                  style={{margin: 15}}
                   source={{uri: `https://www.youtube.com/embed/${videoLinkUrl.query.v || videoLinkUrl.pathname.replace('/', '')}`}}
                   javaScriptEnabled={true}
                   domStorageEnabled={true} />
               </View>
             )
-          }
-        </Card>
-      </Content>
-    </Container>
+          }          
+        </View>
+      </View>
+      <Modal
+        visible={showImageModal}>
+        <ImageViewer
+          imageUrls={flickr_images.map((url) => ({url}))} />
+        <View style={{position: 'absolute', top: 32, right: 20}}>
+          <TouchableHighlight onPress={toggleImageModal}>
+            <Icon type="AntDesign" name="closecircleo" style={{color: "#fff"}} />
+          </TouchableHighlight>
+        </View>
+
+      </Modal>
+    </ScrollView>
   );
 };
+
+const tableStyle = StyleSheet.create({
+  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+  wrapper: { flexDirection: 'row' },
+  title: { flex: 2, backgroundColor: '#f6f8fa' },
+  row: {  height: 28 },
+  text: { paddingLeft: 10 }
+});
 
 export default Launch;

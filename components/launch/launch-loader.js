@@ -86,7 +86,10 @@ const LAUNCH_QUERY = gql`
 // TODO: error handling
 const LaunchLoader = ({route, navigation}) => {
   const {params: {id}} = route;
-  const {data, loading} = useQuery(LAUNCH_QUERY, {variables: {id}});
+  const {data, loading} = useQuery(LAUNCH_QUERY, {
+    variables: {id},
+    fetchPolicy: 'cache-and-network',
+  });
 
   useEffect(() => {
     navigation.setParams({launchTitle: 'Loading...'});

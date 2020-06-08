@@ -6,6 +6,7 @@ import {format} from 'date-fns';
 import {Col, Row, Grid} from 'react-native-easy-grid';
 
 import {DATE_FORMAT, SPACEX_LOGO_URL} from '../../constants';
+import style from '../../style';
 
 const LaunchListItem = ({
   launch,
@@ -41,13 +42,7 @@ const LaunchListItem = ({
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View
-        style={{
-          borderRadius: 10,
-          backgroundColor: "#fff",
-          padding: 20,
-          margin: 8,
-        }}>
+      <View style={style.card}>
         <Grid>
           <Col style={{width: 100}}>
             <View style={{marginTop: 5}}>
@@ -88,7 +83,7 @@ const LaunchListItem = ({
 
 const Launches = ({launches, navigation}) => {
   return (
-    <View style={{padding: 8, backgroundColor: "#eee"}}>
+    <View style={{padding: 8, backgroundColor: "#f5f5f5"}}>
       <VirtualizedList
         data={launches}
         getItemCount={(data) => data.length}
