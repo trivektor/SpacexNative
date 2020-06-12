@@ -7,8 +7,7 @@ const Launchpads = ({launchpads}) => {
   return (
     <Container>
       <MapView
-        style={{...StyleSheet.absoluteFillObject}}
-        showsUserLocation={true}>
+        style={{...StyleSheet.absoluteFillObject}}>
         {
           launchpads.map(({id, location, attempted_launches}) => {
             const {name, region, latitude, longitude} = location;
