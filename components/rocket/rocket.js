@@ -1,10 +1,12 @@
 import React from 'react';
 import {Container, Content} from 'native-base';
 
+import style from '../../style';
+
 const Rocket = () => {
   return (
     <Container>
-      <Content style={{backgroundColor: "#f5f5f5", padding: 16}}>
+      <Content style={style.containerContent}>
       </Content>
     </Container>
   );

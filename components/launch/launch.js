@@ -45,40 +45,44 @@ const Launch = ({launch, navigation}) => {
 
   return (
     <Container>
-      <Content style={{backgroundColor: "#f5f5f5", padding: 8}}>
+      <Content style={style.containerContent}>
         <View style={style.card}>
-          <View style={{marginBottom: 8}}>
+          <View style={{...style.cardItem, marginTop: 0}}>
             <Grid>
               <Col style={{paddingRight: 10}}>
-                <Text style={{...style.text, fontSize: 42, fontWeight: "600"}}>
-                  {mission_name}
-                </Text>
-                {upcoming && <Text style={{...style.text, color: '#E8442E'}}>Upcoming</Text>}
+                <View>
+                  <Text style={{...style.text, fontSize: 42, fontWeight: "600"}}>{mission_name}</Text>
+                </View>
+                {upcoming && (
+                  <View style={style.cardItem}>
+                    <Text style={{...style.text, color: "#E8442E"}}>Upcoming</Text>
+                  </View>
+                )}                
               </Col>
               <Col style={{width: 80}}>
                 <Thumbnail large source={{uri: mission_patch || SPACEX_LOGO_URL}} />
               </Col>
             </Grid>
           </View>
-          <View style={{marginBottom: 8}}>
+          <View style={style.cardItem}>
             <Text style={style.text}>
-              <Text style={{fontWeight: "700"}}>Date:</Text>
+              <Text style={{fontWeight: "bold"}}>Date:</Text>
               {" "}
               {format(launch_date_unix * 1000, DATE_FORMAT)}
             </Text>
           </View>
-          <View style={{marginBottom: 8}}>
+          <View style={style.cardItem}>
             <Text style={style.text}>
-              <Text style={{fontWeight: "700"}}>Location:</Text>
+              <Text style={{fontWeight: "bold"}}>Location:</Text>
               {" "}
               {site_name_long}
             </Text>
           </View>
           {
             !upcoming && (
-              <View style={{marginBottom: 8}}>
+              <View style={style.cardItem}>
                 <Text style={style.text}>
-                  <Text style={{fontWeight: '700'}}>Result:</Text>
+                  <Text style={{fontWeight: "bold"}}>Result:</Text>
                   {' '}
                   {launch_success 
                     ? <Text style={{color: "#7BE0AD"}}>Successful</Text> 
@@ -88,7 +92,7 @@ const Launch = ({launch, navigation}) => {
               </View>          
             )
           }                
-          <View>
+          <View style={style.cardItem}>
             <Text style={style.text}>
               <Text style={{fontWeight: "700"}}>Details:</Text>
               {" "}
@@ -98,17 +102,17 @@ const Launch = ({launch, navigation}) => {
             </Text>
           </View>
         </View>
-        <View style={{...style.card, marginTop: 16}}>
+        <View style={style.card}>
           <View style={{marginBottom: 10}}>
             <Text style={{...style.text, fontSize: 38, fontWeight: "600"}}>
               Rocket
             </Text>
           </View>
           <View>
-            <View style={{marginBottom: 10}}>
-              <Text style={style.text}>1st Stage Cores</Text>
+            <View style={style.cardItem}>
+              <Text style={{...style.text, fontWeight: "bold"}}>1st Stage Cores</Text>
             </View>
-            <View>
+            <View style={style.cardItem}>
               {
                 first_stage.cores.map((core, index) => {
                   const {
@@ -177,124 +181,124 @@ const Launch = ({launch, navigation}) => {
                 })
               }
             </View>
-        <View style={{marginTop: 10, marginBottom: 10}}>
-          <Text style={style.text}>2nd Stage Payloads</Text>
+            <View style={style.cardItem}>
+              <Text style={{...style.text, fontWeight: "bold"}}>2nd Stage Payloads</Text>
+            </View>
+            <View style={style.cardItem}>
+              {
+                second_stage.payloads.map((payload, index) => {
+                  const {
+                    manufacturer,
+                    payload_type,
+                    payload_mass_kg,
+                    payload_mass_lbs,
+                    orbit,
+                    orbit_params,
+                  } = payload;
+                  const {
+                    apoapsis_km,
+                    periapsis_km,
+                    eccentricity,
+                    inclination_deg,
+                    longitude,
+                    reference_system,
+                    regime,
+                    semi_major_axis_km,
+                  } = orbit_params;
+                  
+                  return (
+                    <Grid key={index} style={{...gridStyle.grid, marginBottom: 8}}>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Manufacturer</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{manufacturer || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Payload Type</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{payload_type || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Payload (kg)</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{payload_mass_kg || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={gridStyle.firstCol}>
+                          <Text style={gridStyle.text}>Payload (lbs)</Text>
+                        </Col>
+                        <Col style={gridStyle.secondCol}>
+                          <Text style={gridStyle.text}>{payload_mass_lbs || 'n/a'}</Text>
+                        </Col>
+                      </Row>
+                      <Row style={gridStyle.row}>
+                        <Col style={{padding: 8}}>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>Orbit Params</Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Reference System: {reference_system || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Regime: {regime || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Longitude: {longitude || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Semi Major Axis (km): {semi_major_axis_km || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Eccentricity: {eccentricity || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Periapsis (km): {periapsis_km || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Apoapsis (km): {apoapsis_km || 'n/a'}
+                            </Text>
+                          </View>
+                          <View style={{marginBottom: 8}}>
+                            <Text style={gridStyle.text}>
+                              Inclination (deg): {inclination_deg || 'n/a'}
+                            </Text>
+                          </View>
+                        </Col>
+                      </Row>                    
+                    </Grid>
+                  );
+                })
+              }
+            </View>
+          </View>
         </View>
-        <View>
-          {
-            second_stage.payloads.map((payload, index) => {
-              const {
-                manufacturer,
-                payload_type,
-                payload_mass_kg,
-                payload_mass_lbs,
-                orbit,
-                orbit_params,
-              } = payload;
-              const {
-                apoapsis_km,
-                periapsis_km,
-                eccentricity,
-                inclination_deg,
-                longitude,
-                reference_system,
-                regime,
-                semi_major_axis_km,
-              } = orbit_params;
-              
-              return (
-                <Grid key={index} style={{...gridStyle.grid, marginBottom: 8}}>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Manufacturer</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{manufacturer || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Payload Type</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{payload_type || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Payload (kg)</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{payload_mass_kg || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={gridStyle.firstCol}>
-                      <Text style={gridStyle.text}>Payload (lbs)</Text>
-                    </Col>
-                    <Col style={gridStyle.secondCol}>
-                      <Text style={gridStyle.text}>{payload_mass_lbs || 'n/a'}</Text>
-                    </Col>
-                  </Row>
-                  <Row style={gridStyle.row}>
-                    <Col style={{padding: 8}}>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>Orbit Params</Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Reference System: {reference_system || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Regime: {regime || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Longitude: {longitude || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Semi Major Axis (km): {semi_major_axis_km || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Eccentricity: {eccentricity || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Periapsis (km): {periapsis_km || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Apoapsis (km): {apoapsis_km || 'n/a'}
-                        </Text>
-                      </View>
-                      <View style={{marginBottom: 8}}>
-                        <Text style={gridStyle.text}>
-                          Inclination (deg): {inclination_deg || 'n/a'}
-                        </Text>
-                      </View>
-                    </Col>
-                  </Row>                    
-                </Grid>
-              );
-            })
-          }
-        </View>
-      </View>
-        </View>
-        <View style={{...style.card, marginTop: 16}}>
-          <View style={{marginBottom: 8}}>
+        <View style={style.card}>
+          <View>
             <Text style={{...style.text, fontSize: 38, fontWeight: "600"}}>Media</Text>
           </View>
-          <View>
+          <View style={style.cardItem}>
             {
               flickr_images.length > 0 && (
                 <Grid style={{marginBottom: 16}}>

@@ -37,10 +37,14 @@ const LaunchListItem = ({
     <View style={style.card}>
       <Grid>
         <Col style={{paddingRight: 10}}>
-          <Text style={{...style.text, fontWeight: '600', fontSize: 38}}>{mission_name}</Text>
           <View>
-            {upcoming && <Text style={{...style.text, color: '#E8442E'}}>Upcoming</Text>}
+            <Text style={{...style.text, fontWeight: "600", fontSize: 38}}>{mission_name}</Text>
           </View>
+          {upcoming && (
+            <View style={style.cardItem}>
+              <Text style={{...style.text, color: "#E8442E"}}>Upcoming</Text>
+            </View>
+          )}
         </Col>
         <Col style={{width: 80}}>
           <Thumbnail
@@ -48,30 +52,30 @@ const LaunchListItem = ({
             source={{uri: mission_patch_small || SPACEX_LOGO_URL}} />
         </Col>
       </Grid>
-      <View style={{marginTop: 10}}>
+      <View style={style.cardItem}>
         <Text style={style.text}>
-          <Text style={{fontWeight: '700'}}>Date:</Text>
+          <Text style={{fontWeight: "bold"}}>Date:</Text>
           {' '}
           {format(launch_date_unix * 1000, DATE_FORMAT)}
         </Text>
       </View>
-      <View style={{marginTop: 8}}>
+      <View style={style.cardItem}>
         <Text style={style.text}>
-          <Text style={{fontWeight: '700'}}>Location:</Text>
+          <Text style={{fontWeight: "bold"}}>Location:</Text>
           {' '}
           {site_name_long}
         </Text>
       </View>
-      <View style={{marginTop: 8}}>
+      <View style={style.cardItem}>
         <Text style={style.text}>
-          <Text style={{fontWeight: '700'}}>Rocket:</Text>
+          <Text style={{fontWeight: "bold"}}>Rocket:</Text>
           {' '}
           {rocket_name} ({rocket_type})
         </Text>
       </View>
       {
         !upcoming && (
-          <View style={{marginTop: 8}}>
+          <View style={style.cardItem}>
             <Text style={style.text}>
               <Text style={{fontWeight: '700'}}>Result:</Text>
               {' '}
@@ -83,10 +87,10 @@ const LaunchListItem = ({
           </View>          
         )
       }      
-      <View style={{marginTop: 24}}>
+      <View style={{...style.cardItem, marginTop: 16}}>
         <Button 
           full
-          style={{padding: 20, backgroundColor: '#505A5B', borderRadius: 8}} 
+          style={style.ctaButton} 
           onPress={onPress}>
           <Text style={{...style.text, fontSize: 20, align: 'center'}}>
             Learn more about this launch
@@ -99,8 +103,8 @@ const LaunchListItem = ({
 
 const Launches = ({launches, navigation}) => {
   return (
-    <SafeAreaView style={{backgroundColor: '#f5f5f5'}}>
-      <View style={{padding: 8}}>
+    <SafeAreaView>
+      <View style={style.containerContent}>
         <VirtualizedList
           data={launches}
           getItemCount={(data) => data.length}

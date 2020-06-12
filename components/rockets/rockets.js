@@ -20,37 +20,41 @@ const RocketListItem = ({
   
   return (
     <View style={style.card}>
-      <View style={{marginBottom: 8}}>
+      <View style={{...style.cardItem, marginTop: 0}}>
         <Text style={{...style.text, fontSize: 40, fontWeight: "600"}}>
           {name}
         </Text>
       </View>
-      <View style={{marginBottom: 8}}>
+      <View style={style.cardItem}>
         <Text style={style.text}>
-          Success Rate: {success_rate_pct}%
+          <Text style={{fontWeight: "600"}}>Success Rate:</Text>
+          {" "}
+          {success_rate_pct}%
         </Text>
       </View>
-      <View style={{marginBottom: 16}}>
+      <View style={style.cardItem}>
         <Text style={style.text}>
           {description}
         </Text>
       </View>
-      <Button 
+      <View style={{...style.cardItem, marginTop: 16}}>
+        <Button   
           full
-          style={{padding: 20, backgroundColor: '#505A5B', borderRadius: 8}} 
+          style={style.ctaButton} 
           onPress={onPress}>
           <Text style={{...style.text, fontSize: 20, align: 'center'}}>
             Learn more about this rocket
           </Text>
         </Button>
+      </View>
     </View>
   );
 };
 
 const Rockets = ({rockets, navigation}) => {
   return (
-    <SafeAreaView style={{backgroundColor: '#f5f5f5'}}>
-      <View style={{padding: 8}}>
+    <SafeAreaView>
+      <View style={style.containerContent}>
         <VirtualizedList
           data={rockets}
           getItemCount={(data) => data.length}
