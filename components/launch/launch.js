@@ -51,13 +51,13 @@ const Launch = ({launch, navigation}) => {
             <Grid>
               <Col style={{paddingRight: 10}}>
                 <View>
-                  <Text style={{...style.text, fontSize: 42, fontWeight: "600"}}>{mission_name}</Text>
+                  <Text style={{...style.text, fontSize: 42, fontWeight: 'bold'}}>{mission_name}</Text>
                 </View>
                 {upcoming && (
                   <View style={style.cardItem}>
                     <Text style={{...style.text, color: "#E8442E"}}>Upcoming</Text>
                   </View>
-                )}                
+                )}
               </Col>
               <Col style={{width: 80}}>
                 <Thumbnail large source={{uri: mission_patch || SPACEX_LOGO_URL}} />
@@ -66,14 +66,14 @@ const Launch = ({launch, navigation}) => {
           </View>
           <View style={style.cardItem}>
             <Text style={style.text}>
-              <Text style={{fontWeight: "bold"}}>Date:</Text>
+              <Text style={{fontWeight: 'bold'}}>Date:</Text>
               {" "}
               {format(launch_date_unix * 1000, DATE_FORMAT)}
             </Text>
           </View>
           <View style={style.cardItem}>
             <Text style={style.text}>
-              <Text style={{fontWeight: "bold"}}>Location:</Text>
+              <Text style={{fontWeight: 'bold'}}>Location:</Text>
               {" "}
               {site_name_long}
             </Text>
@@ -82,19 +82,19 @@ const Launch = ({launch, navigation}) => {
             !upcoming && (
               <View style={style.cardItem}>
                 <Text style={style.text}>
-                  <Text style={{fontWeight: "bold"}}>Result:</Text>
+                  <Text style={{fontWeight: 'bold'}}>Result:</Text>
                   {' '}
-                  {launch_success 
-                    ? <Text style={{color: "#7BE0AD"}}>Successful</Text> 
+                  {launch_success
+                    ? <Text style={{color: "#7BE0AD"}}>Successful</Text>
                     : <Text style={{color: "#D90368"}}>Failed</Text>
                   }
                 </Text>
-              </View>          
+              </View>
             )
-          }                
+          }
           <View style={style.cardItem}>
             <Text style={style.text}>
-              <Text style={{fontWeight: "700"}}>Details:</Text>
+              <Text style={{fontWeight: 'bold'}}>Details:</Text>
               {" "}
               <Text>
                 {details || "No details found"}
@@ -104,13 +104,13 @@ const Launch = ({launch, navigation}) => {
         </View>
         <View style={style.card}>
           <View style={{marginBottom: 10}}>
-            <Text style={{...style.text, fontSize: 38, fontWeight: "600"}}>
+            <Text style={{...style.text, fontSize: 38, fontWeight: 'bold'}}>
               Rocket
             </Text>
           </View>
           <View>
             <View style={style.cardItem}>
-              <Text style={{...style.text, fontWeight: "bold"}}>1st Stage Cores</Text>
+              <Text style={{...style.text, fontWeight: 'bold'}}>1st Stage Cores</Text>
             </View>
             <View style={style.cardItem}>
               {
@@ -205,7 +205,7 @@ const Launch = ({launch, navigation}) => {
                     regime,
                     semi_major_axis_km,
                   } = orbit_params;
-                  
+
                   return (
                     <Grid key={index} style={{...gridStyle.grid, marginBottom: 8}}>
                       <Row style={gridStyle.row}>
@@ -286,7 +286,7 @@ const Launch = ({launch, navigation}) => {
                             </Text>
                           </View>
                         </Col>
-                      </Row>                    
+                      </Row>
                     </Grid>
                   );
                 })
@@ -324,7 +324,7 @@ const Launch = ({launch, navigation}) => {
                     domStorageEnabled={true} />
                 </View>
               )
-            }          
+            }
           </View>
         </View>
       </Content>
@@ -348,7 +348,7 @@ const gridStyle = StyleSheet.create({
     borderWidth: 1,
   },
   row: {
-    borderColor: '#aaa', 
+    borderColor: '#aaa',
     borderBottomWidth: 1,
   },
   firstCol: {
@@ -356,8 +356,8 @@ const gridStyle = StyleSheet.create({
     width: 160,
   },
   secondCol: {
-    borderColor: '#aaa', 
-    borderLeftWidth: 1, 
+    borderColor: '#aaa',
+    borderLeftWidth: 1,
     padding: 8,
   },
   text: {

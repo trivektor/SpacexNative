@@ -1,3 +1,3 @@
-import Rocket from './rocket';
+import RocketLoader from './rocket-loader';
 
-export default Rocket;
+export default RocketLoader;
