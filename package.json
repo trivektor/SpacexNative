@@ -19,7 +19,7 @@
     "date-fns": "^2.14.0",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.21",
     "native-base": "^2.13.12",
     "react": "16.11.0",
     "react-native": "0.62.2",
